@@ -1,0 +1,38 @@
+Install GNS3 on Ubuntu 20.04 Linux
+Step 1: Add GNS3 PPA repository
+sudo add-apt-repository ppa:gns3/ppa
+Step 2: Install GNS3 GUI & GNS3 Server on Ubuntu 20.04
+sudo apt update
+sudo apt install gns3-server gns3-gui
+Step 3: Install IOU Support (Optional)
+sudo dpkg --add-architecture i386
+sudo apt update
+sudo apt install gns3-iou
+Step 4: Docker Support
+    Install Docker CE on Ubuntu 22.04
+Step 1: Update System
+sudo apt -y update
+Step 2: Install basic dependencies
+sudo apt -y install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+Step 3: Install Docker CE on Ubuntu 22.04
+sudo apt remove docker docker-engine docker.io containerd runc
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io
+
+After installing Docker and IOU, add your user to the following groups:
+sudo usermod -aG ubridge,kvm,libvirt,docker,wireshark akamli
+Now that GNS3 is installed on Ubuntu 20.04, you can launch it from the terminal or from Desktop launcher.
+---
+In the ubuntu:
+docker pull alpine
+docker pull frrouting/frr
+Open gns3 go to edit->preferences->container->add new->existing image->image list
+And add routeur_akamli from frrouting image and host_akamli from alpine image
+Start routeur_akamli -> open the oxiliary console->
+#cp /etc/frr/vtysh.conf.symple /etc/frr/vtysh.conf
+#vi /etc/frr/vtysh.conf
+# or edit /etc/daemons
+And enable the services. In our case isis, ospf, bgp,
+After make changes in the container we commit those changes and we create another container from routeur_akamli (name of the commit frr with changes).
